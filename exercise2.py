@@ -21,24 +21,31 @@ class Cart:
         self.lines: list[dict] = []
 
     def add_item(self, item: dict, qty: int = 1) -> None:
-        # TODO
-        raise NotImplementedError
+        for line in self.lines:
+            if line["item_id"] == item["id"]:
+                line["qty"] += qty
+                return
+        self.lines.append({
+            "item_id": item["id"],
+            "name": item["name"],
+            "price": item["price"],
+            "qty": qty,
+        })
 
     def remove_item(self, item_id: int) -> None:
-        # TODO
-        raise NotImplementedError
+        for line in self.lines:
+            if line["item_id"] == item_id:
+                self.lines.remove(line)
+                return
 
     def clear(self) -> None:
-        # TODO
-        raise NotImplementedError
+        self.lines.clear()
 
     def total(self) -> float:
-        # TODO - round ONCE, at the end
-        raise NotImplementedError
+        return round(sum(line["price"] * line["qty"] for line in self.lines), 2)
 
     def __repr__(self) -> str:
-        # TODO
-        raise NotImplementedError
+        return f"<Cart {len(self.lines)} items, ${self.total():.2f}>"
 
 
 if __name__ == "__main__":
